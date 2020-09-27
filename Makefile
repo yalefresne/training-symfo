@@ -50,3 +50,7 @@ warmup: ## Warmup the cache
 
 purge: ## Purge cache and logs
 	rm -rf var/cache/* var/logs/*
+
+## —— Coding standards ✨ ——————————————————————————————————————————————————————
+cs-fix: ## Run php-cs-fixer and fix the code.
+	./vendor/bin/php-cs-fixer fix src/
