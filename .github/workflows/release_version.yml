@@ -1,0 +1,33 @@
+name: release-sentry
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set release environment
+      run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+
+    - name: Change project version in env file
+      working-directory: ./
+      run: sed -i "s/^PROJECT_VERSION=.*$/PROJECT_VERSION=${{ env.RELEASE_VERSION }}/" .env.prod
+
+    - name: config  git
+      run: |
+        git config user.name yalefresne
+        git config user.email yalefresne@gmail.com
+
+    - name: stage changed files
+      run: git add .env.prod
+
+    - name: commit changed files
+      run: git commit -m "Auto updating .env.prod"
+
+    - name: push code
+      run: git push origin HEAD:feat/action-test
